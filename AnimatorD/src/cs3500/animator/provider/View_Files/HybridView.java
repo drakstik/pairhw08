@@ -24,6 +24,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import cs3500.animator.provider.Controller_Files.IHybridController;
+
 
 /**
  * The HybridView takes in info from the Hybridview, and displays it in visual format, while also
@@ -155,7 +157,7 @@ public class HybridView extends VisualView implements IHybridView {
   /**
    * Set listener for view timer.
    */
-  public void setTimerListener(HybridController listener) {
+  public void setTimerListener(IHybridController listener) {
     ActionListener listen = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         listener.timeCheck(timeTick);
@@ -165,7 +167,7 @@ public class HybridView extends VisualView implements IHybridView {
   }
 
   @Override
-  public void setStartListener(HybridController listener) {
+  public void setStartListener(IHybridController listener) {
     startButton.addActionListener((ActionEvent e) -> {
       listener.start();
       pauseButton.setEnabled(true);
@@ -186,7 +188,7 @@ public class HybridView extends VisualView implements IHybridView {
   }
 
   @Override
-  public void setPausePlayListener(HybridController listener) {
+  public void setPausePlayListener(IHybridController listener) {
     pauseButton.addActionListener((ActionEvent e) -> {
       listener.pausePlay();
       if (listener.isPaused()) {
@@ -200,7 +202,7 @@ public class HybridView extends VisualView implements IHybridView {
 
   }
 
-  private Action pausePlayOnSpace(HybridController listener) {
+  private Action pausePlayOnSpace(IHybridController listener) {
     Action spaceAction = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -216,7 +218,7 @@ public class HybridView extends VisualView implements IHybridView {
   }
 
   @Override
-  public void setRestartListener(HybridController listener) {
+  public void setRestartListener(IHybridController listener) {
     restartButton.addActionListener((ActionEvent e) -> {
       listener.restart();
       textOutput.append("\nThe Animation was Restarted.");
@@ -224,7 +226,7 @@ public class HybridView extends VisualView implements IHybridView {
   }
 
   @Override
-  public void setNewSpeedListener(HybridController listener) {
+  public void setNewSpeedListener(IHybridController listener) {
     newSpeedButton.addActionListener((ActionEvent e) -> {
       int newSpeed = Integer.valueOf(newSpeedText.getText());
       listener.changeSpeed(newSpeed);
@@ -235,7 +237,7 @@ public class HybridView extends VisualView implements IHybridView {
   /**
    * Set listener function for remove shape operation.
    */
-  public void setRemoveShapeListener(HybridController listener) {
+  public void setRemoveShapeListener(IHybridController listener) {
     removeButton.addActionListener((ActionEvent e) -> {
       ArrayList<String> shapesToRemove = new ArrayList<String>();
       Scanner scan = new Scanner(removeShapesText.getText()).useDelimiter(",");
@@ -256,7 +258,7 @@ public class HybridView extends VisualView implements IHybridView {
   /**
    * Set listener function for loop button.
    */
-  public void setLoopListener(HybridController listener) {
+  public void setLoopListener(IHybridController listener) {
     loopButton.addActionListener((ActionEvent e) -> {
       listener.enableLoop();
       //System.out.println("LOOP ENABLED");

@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import cs3500.animator.controller.VisualController;
+import cs3500.animator.provider.Controller_Files.IVisualController;
 
 /**
  * The Visual View relies on the Visual Controller to feed it the appropriately packaged information
@@ -39,7 +40,7 @@ public class VisualView extends JFrame implements IVisualView {
   }
 
   @Override
-  public void setTimerListener(VisualController listener) {
+  public void setTimerListener(IVisualController listener) {
     ActionListener listen = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         listener.timerAction(timeTick);

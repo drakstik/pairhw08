@@ -1,30 +1,28 @@
 package cs3500.animator.provider.View_Files;
 
-import cs3500.animator.controller.HybridController;
-import cs3500.animator.view.ISVGView;
-import cs3500.animator.view.IVisualView;
+import cs3500.animator.provider.Controller_Files.IHybridController;
 
 public interface IHybridView extends IVisualView, ISVGView {
 
   /**
    * Set listener function for start button.
    */
-  void setStartListener(HybridController listener);
+  void setStartListener(IHybridController listener);
 
   /**
    * Set listener function for Pause/Play button.
    */
-  void setPausePlayListener(HybridController listener);
+  void setPausePlayListener(IHybridController listener);
 
   /**
    * Set listener function for restart button.
    */
-  void setRestartListener(HybridController listener);
+  void setRestartListener(IHybridController listener);
 
   /**
    * Set listener function for new speed button.
    */
-  void setNewSpeedListener(HybridController listener);
+  void setNewSpeedListener(IHybridController listener);
 
   /**
    * Pause the view timer.
