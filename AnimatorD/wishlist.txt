@@ -1,0 +1,31 @@
+OOD
+
+CODE TODO:
+
+**DONE   - remove tickRate and related methods from the views and move them to controller.
+**DONE   - Write Controller.go()
+         - Handling "loop" in the controller.
+         - Move logic from Display to controller (Specifically snapshot()).
+         - Setup checkBoxes in controller.
+         - Changes main method so early tickrate setting is done correctly in the controller, not view.
+**DONE
+
+-abstract file writing code in main
+
+-Fix input parsing in main()
+-Fix SVG output (buildings)
+
+--SMALL DETAILS:
+----Remove unnecessary system.outs used for testing
+
+TESTS:
+
+-Test initAnims in constructor for AnimatorModel.
+-Test addComponent()
+
+UI ERROR CECKING:
+
+**DONE -Negative numbers and no-numeric entries in tickRate change:
+      -Add error-handling windows. 
+
+
