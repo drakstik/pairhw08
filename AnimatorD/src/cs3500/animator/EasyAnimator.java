@@ -5,7 +5,9 @@ import cs3500.animator.controller.ControllerSVG;
 import cs3500.animator.controller.ControllerText;
 import cs3500.animator.controller.ControllerVisual;
 import cs3500.animator.model.AnimatorModel;
+import cs3500.animator.model.ProviderViewFactory;
 import cs3500.animator.model.ViewFactory;
+import cs3500.animator.provider.View_Files.View;
 import cs3500.animator.view.HybridView;
 import cs3500.animator.view.IView;
 import cs3500.animator.view.SVGView;
@@ -39,11 +41,13 @@ public final class EasyAnimator {
   // of a test input to see our working program (svg and text DO print correctly to System.out)
   public static void main(String[] args) {
     ViewFactory vf = new ViewFactory();
+    ProviderViewFactory pvf = new ProviderViewFactory();
 
     String animFileName = "";
     String viewType = "";
     String output = "";
     double tickRate = 1.0;
+    String provider = "";
 
     Appendable ap = new StringBuilder();
     Scanner sc = new Scanner(System.in);
@@ -76,6 +80,10 @@ public final class EasyAnimator {
           tickRate = Double.parseDouble(commands[i + 1]);
           i++;
           break;
+        case ("-provider"):
+          provider = commands[i + 1];
+          i++;
+          break;
         default:
           throw new IllegalArgumentException("Invalid command line input.");
       }
@@ -88,123 +96,161 @@ public final class EasyAnimator {
     AnimationFileReader afr = new AnimationFileReader();
     TweenModelBuilder<AnimatorModel> builder = new AnimatorModel.Builder();
 
-    switch (viewType) {
-      case ("interactive"):
-        AnimatorModel hModel; //all fields are empty ArrayLists
-        try {
-          hModel = afr.readFile(animFileName, builder);
-        } catch (FileNotFoundException e) {
-          System.out.println("Given filename invalid.");
+    if (provider.equals("true")) {
+      View view = pvf.create(viewType, (int)Math.round(tickRate), output);
+      AnimatorModel model;
+      try {
+        model = afr.readFile(animFileName, builder);
+
+
+      switch (viewType) {
+        case ("interactive"):
+          cs3500.animator.provider.View_Files.HybridView phview
+                  = (cs3500.animator.provider.View_Files.HybridView) view;
+
           break;
-        }
-
-        IView hv = vf.create("interactive");
-        HybridView hView = (HybridView) hv;
-        ControllerHybrid ch = new ControllerHybrid(hModel, hView);
-
-        hView.setModel(hModel);
-        ch.setTickRate(tickRate);
-        ch.run();
-        break;
-      case ("svg"):
-        AnimatorModel svgModel; //all fields are empty ArrayLists
-
-        try {
-          svgModel = afr.readFile(animFileName, builder);
-        } catch (FileNotFoundException e) {
-          System.out.println("Given filename invalid.");
+        case ("svg"):
+          cs3500.animator.provider.View_Files.SVGView pSVGview
+                  = (cs3500.animator.provider.View_Files.SVGView) view;
           break;
-        }
-
-
-        IView svgV = vf.create("svg");
-        SVGView svgView = (SVGView) svgV;
-        svgView.setModel(svgModel);
-        ControllerSVG cSVG = new ControllerSVG(svgModel, svgView);
-        Appendable out = svgView.getOutput();
-        cSVG.run();
-
-        if (!output.equals("") && !output.equals("out")) { //else leave ap as System.out
-
-          file = new File(output);
-
-          //Create the file
+        case ("visual"):
+          cs3500.animator.provider.View_Files.VisualView pvview
+                  = (cs3500.animator.provider.View_Files.VisualView) view;
+          break;
+        case ("text"):
+          cs3500.animator.provider.View_Files.TextView ptview
+                  = (cs3500.animator.provider.View_Files.TextView) view;
+          ptview.describeAnimation(model.describeAnimator());
+          ptview.display();
+          break;
+        default:
+          System.out.println("Given viewType invalid!");
+          break;
+      }
+      } catch (FileNotFoundException e) {
+        System.out.println("Given filename invalid.");
+      }
+    } else if (provider.equals("false")) {
+      switch (viewType) {
+        case ("interactive"):
+          AnimatorModel hModel; //all fields are empty ArrayLists
           try {
-            if (file.createNewFile()) {
-              PrintWriter pw = new PrintWriter(file);
-              pw.write(out.toString());
-              pw.close();
-              System.out.println("File: " + output + " is created!");
-            } else {
-              System.out.println("File already exists.");
-            }
-          } catch (IOException e) {
-            System.out.println(e);
+            hModel = afr.readFile(animFileName, builder);
+          } catch (FileNotFoundException e) {
+            System.out.println("Given filename invalid.");
+            break;
           }
-        } else {
-          System.out.println(svgView.getOutput());
-        }
-        break;
 
-      case ("visual"):
+          IView hv = vf.create("interactive");
+          HybridView hView = (HybridView) hv;
+          ControllerHybrid ch = new ControllerHybrid(hModel, hView);
 
-
-        AnimatorModel vModel = new AnimatorModel(); //all fields are empty ArrayLists
-        try {
-          vModel = afr.readFile(animFileName, builder);
-        } catch (FileNotFoundException e) {
-          System.out.println("Given filename invalid.");
+          hView.setModel(hModel);
+          ch.setTickRate(tickRate);
+          ch.run();
           break;
-        }
+        case ("svg"):
+          AnimatorModel svgModel; //all fields are empty ArrayLists
 
-        IView vv = vf.create("visual");
-        VisualView vView = (VisualView) vv;
-        vView.setModel(vModel);
-        ControllerVisual cv = new ControllerVisual(vModel, vView);
-        cv.setTickRate(tickRate);
-        cv.run();
-        break;
-
-      case ("text"):
-        AnimatorModel tModel = new AnimatorModel(); //all fields are empty ArrayLists
-
-        try {
-          tModel = afr.readFile(animFileName, builder);
-        } catch (FileNotFoundException e) {
-          System.out.println("Given filename invalid.");
-          break;
-        }
-
-        IView tV = vf.create("text");
-        TextView tView = (TextView) tV;
-        tView.setModel(tModel);
-        ControllerText cTXT = new ControllerText(tModel, tView);
-        cTXT.setTickRate(tickRate);
-        cTXT.run();
-
-        //TODO Abstract?
-        if (!output.equals("") && !output.equals("out")) { //else leave ap as System.out
-          file = new File(output);
-          //Create the file
           try {
-            if (file.createNewFile()) {
-              PrintWriter pw = new PrintWriter(file);
-              pw.write(tView.getOutput().toString());
-              pw.close();
-              System.out.println("File: " + output + " is created!");
-            } else {
-              System.out.println("File already exists.");
-            }
-          } catch (IOException e) {
-            System.out.println(e);
+            svgModel = afr.readFile(animFileName, builder);
+          } catch (FileNotFoundException e) {
+            System.out.println("Given filename invalid.");
+            break;
           }
-        } else {
-          System.out.print(tView.getOutput());
-        }
-        break;
-      default:
-        System.out.println("Given viewType invalid!");
-        break;
+
+
+          IView svgV = vf.create("svg");
+          SVGView svgView = (SVGView) svgV;
+          svgView.setModel(svgModel);
+          ControllerSVG cSVG = new ControllerSVG(svgModel, svgView);
+          Appendable out = svgView.getOutput();
+          cSVG.run();
+
+          if (!output.equals("") && !output.equals("out")) { //else leave ap as System.out
+
+            file = new File(output);
+
+            //Create the file
+            try {
+              if (file.createNewFile()) {
+                PrintWriter pw = new PrintWriter(file);
+                pw.write(out.toString());
+                pw.close();
+                System.out.println("File: " + output + " is created!");
+              } else {
+                System.out.println("File already exists.");
+              }
+            } catch (IOException e) {
+              System.out.println(e);
+            }
+          } else {
+            System.out.println(svgView.getOutput());
+          }
+          break;
+
+        case ("visual"):
+
+
+          AnimatorModel vModel = new AnimatorModel(); //all fields are empty ArrayLists
+          try {
+            vModel = afr.readFile(animFileName, builder);
+          } catch (FileNotFoundException e) {
+            System.out.println("Given filename invalid.");
+            break;
+          }
+
+          IView vv = vf.create("visual");
+          VisualView vView = (VisualView) vv;
+          vView.setModel(vModel);
+          ControllerVisual cv = new ControllerVisual(vModel, vView);
+          cv.setTickRate(tickRate);
+          cv.run();
+          break;
+
+        case ("text"):
+          AnimatorModel tModel = new AnimatorModel(); //all fields are empty ArrayLists
+
+          try {
+            tModel = afr.readFile(animFileName, builder);
+          } catch (FileNotFoundException e) {
+            System.out.println("Given filename invalid.");
+            break;
+          }
+
+          IView tV = vf.create("text");
+          TextView tView = (TextView) tV;
+          tView.setModel(tModel);
+          ControllerText cTXT = new ControllerText(tModel, tView);
+          cTXT.setTickRate(tickRate);
+          cTXT.run();
+
+          //TODO Abstract?
+          if (!output.equals("") && !output.equals("out")) { //else leave ap as System.out
+            file = new File(output);
+            //Create the file
+            try {
+              if (file.createNewFile()) {
+                PrintWriter pw = new PrintWriter(file);
+                pw.write(tView.getOutput().toString());
+                pw.close();
+                System.out.println("File: " + output + " is created!");
+              } else {
+                System.out.println("File already exists.");
+              }
+            } catch (IOException e) {
+              System.out.println(e);
+            }
+          } else {
+            System.out.print(tView.getOutput());
+          }
+          break;
+        default:
+          System.out.println("Given viewType invalid!");
+          break;
+      }
+    } else {
+      throw new IllegalArgumentException("Invalid input for provider. Has to be true or false");
     }
   }
 }
