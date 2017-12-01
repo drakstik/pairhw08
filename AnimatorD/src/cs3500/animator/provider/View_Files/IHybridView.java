@@ -1,6 +1,8 @@
-package cs3500.animator.view;
+package cs3500.animator.provider.View_Files;
 
 import cs3500.animator.controller.HybridController;
+import cs3500.animator.view.ISVGView;
+import cs3500.animator.view.IVisualView;
 
 public interface IHybridView extends IVisualView, ISVGView {
 

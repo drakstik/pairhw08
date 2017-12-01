@@ -1,4 +1,4 @@
-package cs3500.animator.view;
+package cs3500.animator.provider.View_Files;
 
 /**
  * The view interface for the text view: The output should follow the format set here:

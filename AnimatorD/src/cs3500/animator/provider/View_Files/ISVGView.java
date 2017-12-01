@@ -1,4 +1,6 @@
-package cs3500.animator.view;
+package cs3500.animator.provider.View_Files;
+
+import cs3500.animator.provider.View_Files.View;
 
 /**
  * The view interface for the svg view, the output will follow the Format set below:

@@ -1,4 +1,4 @@
-package cs3500.animator.view;
+package cs3500.animator.provider.View_Files;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -23,8 +23,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-
-import cs3500.animator.controller.HybridController;
 
 
 /**

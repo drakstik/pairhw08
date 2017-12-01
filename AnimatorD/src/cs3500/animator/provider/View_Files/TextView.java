@@ -1,4 +1,4 @@
-package cs3500.animator.view;
+package cs3500.animator.provider.View_Files;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

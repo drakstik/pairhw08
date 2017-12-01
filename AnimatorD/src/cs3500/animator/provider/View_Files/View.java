@@ -1,4 +1,4 @@
-package cs3500.animator.view;
+package cs3500.animator.provider.View_Files;
 
 /**
  * Interface for a generic View, this is extended further by all other views, adding in thier
