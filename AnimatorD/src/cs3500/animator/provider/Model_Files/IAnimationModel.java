@@ -35,23 +35,23 @@ public interface IAnimationModel {
    */
   void removeShape(String shapeName);
 
-  /**
-   * Getter for the model's list of addShapeOperations.
-   */
-  ArrayList<AddShapeOperation> getAddShapeOperations();
-
-  /**
-   * Getter for the model's list of moveShapeOperations.
-   */
-  ArrayList<MoveShapeOperation> getMoveShapeOperations();
-
-  /**
-   * Getter for the model's list of ScaleShapeOperations.
-   */
-  ArrayList<ScaleShapeOperation> getScaleShapeOperations();
-
-  /**
-   * Getter for the model's list of ColorShapeOperations.
-   */
-  ArrayList<ColorShapeOperation> getColorShapeOperations();
+//  /**
+//   * Getter for the model's list of addShapeOperations.
+//   */
+//  ArrayList<AddShapeOperation> getAddShapeOperations();
+//
+//  /**
+//   * Getter for the model's list of moveShapeOperations.
+//   */
+//  ArrayList<MoveShapeOperation> getMoveShapeOperations();
+//
+//  /**
+//   * Getter for the model's list of ScaleShapeOperations.
+//   */
+//  ArrayList<ScaleShapeOperation> getScaleShapeOperations();
+//
+//  /**
+//   * Getter for the model's list of ColorShapeOperations.
+//   */
+//  ArrayList<ColorShapeOperation> getColorShapeOperations();
 }

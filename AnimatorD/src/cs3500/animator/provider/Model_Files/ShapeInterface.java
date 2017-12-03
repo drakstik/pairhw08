@@ -10,27 +10,27 @@ import cs3500.animator.model.IMyShape;
  * Interface for the Shape superclass.
  */
 public interface ShapeInterface {
-
-  /**
-   * Moves the shape to a new provided position.
-   *
-   * @return the MoveShapeOperation corresponding to this move.
-   */
-  MoveShapeOperation move(Position newPosition, int timeStart, int timeEnd);
-
-  /**
-   * Change the color of the shape to the new provided color.
-   *
-   * @return the ColorShapeOperation corresponding to this color change.
-   */
-  ColorShapeOperation changeColor(Color newColor, int startTime, int endTime);
-
-  /**
-   * Scales the shape to new provided dimensions.
-   *
-   * @return the ScaleShapeOperation corresponding to this shape scale change.
-   */
-  ScaleShapeOperation scale(int timeStart, int timeEnd, Object... params);
+//
+//  /**
+//   * Moves the shape to a new provided position.
+//   *
+//   * @return the MoveShapeOperation corresponding to this move.
+//   */
+//  MoveShapeOperation move(Position newPosition, int timeStart, int timeEnd);
+//
+//  /**
+//   * Change the color of the shape to the new provided color.
+//   *
+//   * @return the ColorShapeOperation corresponding to this color change.
+//   */
+//  ColorShapeOperation changeColor(Color newColor, int startTime, int endTime);
+//
+//  /**
+//   * Scales the shape to new provided dimensions.
+//   *
+//   * @return the ScaleShapeOperation corresponding to this shape scale change.
+//   */
+//  ScaleShapeOperation scale(int timeStart, int timeEnd, Object... params);
 
   /**
    * Set the time at which the shape will appear and disappear.
@@ -66,11 +66,11 @@ public interface ShapeInterface {
    * Getter for the shape type.
    */
   IMyShape.ShapeType getType();
-
-  /**
-   * Getter for the AddShapeOperation created when adding shape to animation.
-   */
-  AddShapeOperation getAddOperation(int timeStart, int timeEnd, Position position);
+//
+//  /**
+//   * Getter for the AddShapeOperation created when adding shape to animation.
+//   */
+//  AddShapeOperation getAddOperation(int timeStart, int timeEnd, Position position);
 }
 
 

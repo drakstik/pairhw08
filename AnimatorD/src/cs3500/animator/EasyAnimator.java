@@ -1,16 +1,14 @@
 package cs3500.animator;
 
-import sun.security.provider.SHA;
-
 import cs3500.animator.controller.ControllerHybrid;
 import cs3500.animator.controller.ControllerSVG;
 import cs3500.animator.controller.ControllerText;
 import cs3500.animator.controller.ControllerVisual;
+import cs3500.animator.provider.Controller_Files.IVisualController;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.AnimatorModel;
 import cs3500.animator.model.IMyShape;
 import cs3500.animator.model.ProviderViewFactory;
-import cs3500.animator.model.ShapeColor;
 import cs3500.animator.model.ViewFactory;
 import cs3500.animator.provider.View_Files.View;
 import cs3500.animator.view.HybridView;
@@ -126,13 +124,13 @@ public final class EasyAnimator {
         case ("visual"):
           cs3500.animator.provider.View_Files.VisualView pvview
                   = (cs3500.animator.provider.View_Files.VisualView) view;
-          ControllerVisual cv = new ControllerVisual(model, pvview);
+          IVisualController cv = new ControllerVisual(model, pvview);
           pvview.setTimerListener(cv);
 
 //          pvview.display();
 
           ArrayList<AbsMyShape> shapes = model.getShapes();
-          pvview.setUpPanel(MyShapesToShapes(model.getShapes()), MyShapesToColors(model.getShapes()));
+          pvview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
           break;
         case ("text"):
           cs3500.animator.provider.View_Files.TextView ptview

@@ -1,13 +1,14 @@
 package cs3500.animator.controller;
 
+import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.IAnimatorModel;
 import cs3500.animator.provider.Controller_Files.IVisualController;
 import cs3500.animator.view.VisualView;
-
+import cs3500.animator.model.Utils;
 import javax.swing.Timer;
 import javax.swing.JComponent;
 
-import java.awt.*;
+
 import java.awt.event.ActionEvent;
 
 /**
@@ -22,6 +23,7 @@ public class ControllerVisual implements IController, IVisualController {
   double tickRate = 1.0;
   boolean loop;
   Timer timer;
+  final Utils utils = new Utils();
 
   /**
    * Constructor for this class.
@@ -31,7 +33,6 @@ public class ControllerVisual implements IController, IVisualController {
   public ControllerVisual(IAnimatorModel model, VisualView view) {
     this.model = model;
     this.view = view;
-
     int tickRateMS = ((Double) (1000 / tickRate))
             .intValue();
     timer = new Timer(tickRateMS, this);
@@ -110,30 +111,32 @@ public class ControllerVisual implements IController, IVisualController {
   @Override
   public void timerAction(int time) {
     model.snapshot(time);
-  }
-
-  @Override
-  public Shape addShape(AddShapeOperation addOp) {
-    return null;
-  }
-
-  @Override
-  public Shape moveShape(MoveShapeOperation moveOp, Shape moveShape, int currentTime) {
-    return null;
-  }
-
-  @Override
-  public Shape scaleShape(ScaleShapeOperation scaleOp, Shape scaleShape, int currentTime) {
-    return null;
-  }
-
-  @Override
-  public Color changeShapeColor(ColorShapeOperation colorOp, int currentTime) {
-    return null;
+    this.viewDisplay();
   }
 
   @Override
   public void viewDisplay() {
-
+    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
+            utils.MyShapesToColors(model.getShapes()));
   }
+
+//  @Override
+//  public Shape addShape(AddShapeOperation addOp) {
+//    return null;
+//  }
+//
+//  @Override
+//  public Shape moveShape(MoveShapeOperation moveOp, Shape moveShape, int currentTime) {
+//    return null;
+//  }
+//
+//  @Override
+//  public Shape scaleShape(ScaleShapeOperation scaleOp, Shape scaleShape, int currentTime) {
+//    return null;
+//  }
+//
+//  @Override
+//  public Color changeShapeColor(ColorShapeOperation colorOp, int currentTime) {
+//    return null;
+//  }
 }

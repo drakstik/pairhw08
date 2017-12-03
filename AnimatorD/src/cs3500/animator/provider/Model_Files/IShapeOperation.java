@@ -27,9 +27,9 @@ public interface IShapeOperation {
    * Getter for the shapeType variable.
    */
   IMyShape.ShapeType getShapeType();
-
-  /**
-   * Getter for the operation variable.
-   */
-  OperationType getOperation();
+//
+//  /**
+//   * Getter for the operation variable.
+//   */
+//  OperationType getOperation();
 }
