@@ -1,5 +1,7 @@
 package cs3500.animator.model;
 
+import java.awt.*;
+
 /**
  * Represent the color of a SimpleShape.
  */
@@ -63,6 +65,16 @@ public class ShapeColor {
    */
   public double getB() {
     return b;
+  }
+
+  /**
+   * Turn this ShapeColor into a Java.awt.Color.
+   * @return a Color.
+   */
+  public Color scToColor() {
+    return new Color(Math.round((float) this.getR() * 255),
+            Math.round((float) this.getG() * 255),
+            Math.round((float) this.getB() * 255));
   }
 
 }
