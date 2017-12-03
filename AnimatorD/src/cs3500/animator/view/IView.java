@@ -60,4 +60,9 @@ public interface IView {
    * @param controller the controller you want to attach to this view.
    */
   void setController(IController controller);
+
+  /**
+   * Displays the model animation as the xml data.
+   */
+  String getXMLData();
 }

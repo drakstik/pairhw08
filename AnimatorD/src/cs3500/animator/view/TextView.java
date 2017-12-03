@@ -140,6 +140,11 @@ public class TextView implements IView {
   }
 
   @Override
+  public String getXMLData() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public void svgDisplay() {
     throw new UnsupportedOperationException();
   }

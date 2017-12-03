@@ -93,6 +93,48 @@ public class SVGView implements IView {
   }
 
   @Override
+  public String getXMLData() {
+    StringBuilder shapeString = new StringBuilder();
+    shapeString.append("\n");
+    for (AbsMyShape shape : model.getShapes()) {
+
+      shapeString.append(shape.toSVG() + "\n");
+
+      for (AbsAnimation anim : model.getAnims()) {
+        if (anim.getName().equals(shape.getName())
+                && (anim.getType() == AbsAnimation.AnimType.APPEAR)) {
+          String appear = String.format("\t\t<animate attributeType=\"XML\" attributeName="
+                  + "\"visibility\" from=\"hidden\" to=\"visible\" begin=\"%d\" dur=\"0.001s\" "
+                  + "fill=\"freeze\"/>%n", anim.getBgn());
+          shapeString.append(appear);
+        } else if (anim.getName().equals(shape.getName())
+                && (anim.getType() == AbsAnimation.AnimType.DISAPPEAR)) {
+          String disappear = String.format("\t\t<animate attributeType=\"XML\" attributeName="
+                  + "\"visibility\" from=\"visible\" to=\"hidden\" begin=\"%d\" dur=\"0.001s\" "
+                  + "fill=\"freeze\"/>%n", anim.getBgn());
+          shapeString.append(disappear);
+        } else if (anim.getName().equals(shape.getName())) {
+          shapeString.append(anim.toSVG() + "\n");
+        }
+      }
+
+      if (shape.getShapeType() == IMyShape.ShapeType.RECTANGLE) {
+        shapeString.append("</rect>\n"); //closing a shape
+      } else if (shape.getShapeType() == IMyShape.ShapeType.OVAL) {
+        shapeString.append("</ellipse>\n");
+      }
+
+      try {
+        output.append(shapeString);
+      } catch (IOException e) {
+        throw new IllegalStateException("A shape was not able to get appended to the output"
+                + " of this SVGView");
+      }
+    }
+    return output.toString();
+  }
+
+  @Override
   public void setModel(IAnimatorModelView model) {
     this.model = model;
   }

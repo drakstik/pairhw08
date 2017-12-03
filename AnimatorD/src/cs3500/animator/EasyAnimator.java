@@ -4,6 +4,7 @@ import cs3500.animator.controller.ControllerHybrid;
 import cs3500.animator.controller.ControllerSVG;
 import cs3500.animator.controller.ControllerText;
 import cs3500.animator.controller.ControllerVisual;
+import cs3500.animator.provider.Controller_Files.IHybridController;
 import cs3500.animator.provider.Controller_Files.IVisualController;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.AnimatorModel;
@@ -109,17 +110,31 @@ public final class EasyAnimator {
       AnimatorModel model;
       try {
         model = afr.readFile(animFileName, builder);
-
+        ArrayList<AbsMyShape> shapes = model.getShapes();
 
       switch (viewType) {
         case ("interactive"):
           cs3500.animator.provider.View_Files.HybridView phview
                   = (cs3500.animator.provider.View_Files.HybridView) view;
-
+          IHybridController hc = new ControllerHybrid(model);
+          phview.setLoopListener(hc);
+          phview.setNewSpeedListener(hc);
+          phview.setPausePlayListener(hc);
+          phview.setRemoveShapeListener(hc);
+          phview.setRestartListener(hc);
+          phview.setStartListener(hc);
+          phview.setTimerListener(hc);
+          phview.display();
+          phview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
           break;
         case ("svg"):
           cs3500.animator.provider.View_Files.SVGView pSVGview
                   = (cs3500.animator.provider.View_Files.SVGView) view;
+          SVGView svgView = new SVGView();
+          svgView.setModel(model);
+          pSVGview.setupSVG(1200, 1200);
+          pSVGview.setXMLData(svgView.getXMLData());
+          pSVGview.display();
           break;
         case ("visual"):
           cs3500.animator.provider.View_Files.VisualView pvview
@@ -128,37 +143,13 @@ public final class EasyAnimator {
           pvview.setTimerListener(cv);
 
 //          pvview.display();
-
-          ArrayList<AbsMyShape> shapes = model.getShapes();
           pvview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
           break;
         case ("text"):
           cs3500.animator.provider.View_Files.TextView ptview
                   = (cs3500.animator.provider.View_Files.TextView) view;
           ptview.describeAnimation(model.describeAnimator());
-
-//          ptview.display();
-
-          if (!output.equals("") && !output.equals("out")) { //else leave ap as System.out
-
-            file = new File(output);
-
-            //Create the file
-            try {
-              if (file.createNewFile()) {
-                PrintWriter pw = new PrintWriter(file);
-                pw.write(model.describeAnimator());
-                pw.close();
-                System.out.println("File: " + output + " is created!");
-              } else {
-                System.out.println("File already exists.");
-              }
-            } catch (IOException e) {
-              System.out.println(e);
-            }
-          } else {
-            System.out.println(model.describeAnimator());
-          }
+          ptview.display();
           break;
         default:
           System.out.println("Given viewType invalid!");

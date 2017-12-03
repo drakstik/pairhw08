@@ -20,15 +20,17 @@ import javax.swing.JOptionPane;
 import cs3500.animator.model.AbsAnimation;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.IAnimatorModel;
+import cs3500.animator.provider.Controller_Files.IHybridController;
 import cs3500.animator.view.HybridView;
 
 /**
  * A controller that interfaces between a model and a HybridView to allow a user
  * to interactively play an animation.
  */
-public class ControllerHybrid implements IController {
+public class ControllerHybrid implements IController, IHybridController {
   private IAnimatorModel model;
   private HybridView view;
+  private cs3500.animator.provider.View_Files.HybridView pview;
 
   boolean loop = false;
   boolean paused;
@@ -36,6 +38,23 @@ public class ControllerHybrid implements IController {
   private Timer timer;
   private int t = 0;
   private double tickRate = 1.0;
+
+  /**
+   * Constructor provider.
+   * @param model the model this controller should be contructed with.
+   */
+  public ControllerHybrid(IAnimatorModel model) {
+    this.model = model;
+    this.view = new HybridView();
+
+    int tickRateMS = ((Double) (1000 / tickRate))
+            .intValue();
+    timer = new Timer(tickRateMS, this);
+    timer.setActionCommand("timer");
+
+    //model.setController(this);
+    view.setController(this);
+  }
 
   /**
    * Constructor.
@@ -214,5 +233,64 @@ public class ControllerHybrid implements IController {
   @Override
   public void restartTimer() {
     timer.restart();
+  }
+
+  @Override
+  public void timeCheck(int time) {
+    if(time >= model.getEndTime() && loop) {
+      this.restart();
+    }
+  }
+
+  @Override
+  public void start() {
+    timer.start();
+  }
+
+  @Override
+  public void pausePlay() {
+    if (this.isPaused()) {
+      this.paused = false;
+      this.start();
+    } else {
+      this.paused = true;
+      timer.stop();
+    }
+  }
+
+  @Override
+  public boolean isPaused() {
+    return this.paused;
+  }
+
+  @Override
+  public void removeShapeName(String shapeString) {
+    ArrayList<AbsAnimation> toRemove = new ArrayList<>();
+    for (AbsAnimation anim : model.getAnims()) {
+      if (anim.getName().equals(shapeString)) {
+        toRemove.add(anim);
+      }
+    }
+    model.getAnims().removeAll(toRemove);
+  }
+
+  @Override
+  public void restart() {
+    this.restartTimer();
+  }
+
+  @Override
+  public void enableLoop() {
+    this.loop = true;
+  }
+
+  @Override
+  public void changeSpeed(int ticksPerSec) {
+    this.setTickRate(ticksPerSec);
+  }
+
+  @Override
+  public void viewDisplay() {
+    this.run();
   }
 }

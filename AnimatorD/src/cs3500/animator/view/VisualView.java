@@ -94,4 +94,9 @@ public class VisualView extends JFrame implements IView {
   public void svgDisplay() {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public String getXMLData() {
+    throw new UnsupportedOperationException();
+  }
 }

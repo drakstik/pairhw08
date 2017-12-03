@@ -151,6 +151,5 @@ public class TextView extends JFrame implements ITextView {
   @Override
   public void describeAnimation(String controllerStringOut) {
     textOutput.append(controllerStringOut);
-    System.out.println(textOutput); //TODO for testing.
   }
 }
