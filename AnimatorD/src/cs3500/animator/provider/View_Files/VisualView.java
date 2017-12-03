@@ -10,7 +10,6 @@ import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import cs3500.animator.controller.VisualController;
 import cs3500.animator.provider.Controller_Files.IVisualController;
 
 /**

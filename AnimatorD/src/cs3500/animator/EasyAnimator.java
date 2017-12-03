@@ -1,11 +1,16 @@
 package cs3500.animator;
 
+import sun.security.provider.SHA;
+
 import cs3500.animator.controller.ControllerHybrid;
 import cs3500.animator.controller.ControllerSVG;
 import cs3500.animator.controller.ControllerText;
 import cs3500.animator.controller.ControllerVisual;
+import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.AnimatorModel;
+import cs3500.animator.model.IMyShape;
 import cs3500.animator.model.ProviderViewFactory;
+import cs3500.animator.model.ShapeColor;
 import cs3500.animator.model.ViewFactory;
 import cs3500.animator.provider.View_Files.View;
 import cs3500.animator.view.HybridView;
@@ -16,10 +21,15 @@ import cs3500.animator.view.VisualView;
 import util.AnimationFileReader;
 import util.TweenModelBuilder;
 
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 /**
@@ -116,12 +126,41 @@ public final class EasyAnimator {
         case ("visual"):
           cs3500.animator.provider.View_Files.VisualView pvview
                   = (cs3500.animator.provider.View_Files.VisualView) view;
+          ControllerVisual cv = new ControllerVisual(model, pvview);
+          pvview.setTimerListener(cv);
+
+//          pvview.display();
+
+          ArrayList<AbsMyShape> shapes = model.getShapes();
+          pvview.setUpPanel(MyShapesToShapes(model.getShapes()), MyShapesToColors(model.getShapes()));
           break;
         case ("text"):
           cs3500.animator.provider.View_Files.TextView ptview
                   = (cs3500.animator.provider.View_Files.TextView) view;
           ptview.describeAnimation(model.describeAnimator());
-          ptview.display();
+
+//          ptview.display();
+
+          if (!output.equals("") && !output.equals("out")) { //else leave ap as System.out
+
+            file = new File(output);
+
+            //Create the file
+            try {
+              if (file.createNewFile()) {
+                PrintWriter pw = new PrintWriter(file);
+                pw.write(model.describeAnimator());
+                pw.close();
+                System.out.println("File: " + output + " is created!");
+              } else {
+                System.out.println("File already exists.");
+              }
+            } catch (IOException e) {
+              System.out.println(e);
+            }
+          } else {
+            System.out.println(model.describeAnimator());
+          }
           break;
         default:
           System.out.println("Given viewType invalid!");
@@ -252,5 +291,46 @@ public final class EasyAnimator {
     } else {
       throw new IllegalArgumentException("Invalid input for provider. Has to be true or false");
     }
+  }
+
+  /**
+   * Turn the given ArrayList of MyShapes into a LinkedHashMap with K: String V: Shape.
+   * @param myShapes ArrayList of MyShapes.
+   * @result LinkedHashMap with K: String V: Shape.
+   */
+  private static LinkedHashMap<String, Shape> MyShapesToShapes(ArrayList<AbsMyShape> myShapes) {
+    LinkedHashMap<String, Shape> l = new LinkedHashMap<String,Shape>();
+
+    for (int i = 0; i < myShapes.size(); i++) {
+      AbsMyShape ms = myShapes.get(i);
+      Shape s;
+
+      if (ms.getShapeType() == IMyShape.ShapeType.RECTANGLE) {
+        s = new Rectangle2D.Double(ms.getPosX(), ms.getPosY(), ms.getWidth(), ms.getHeight());
+      } else {
+        s = new Ellipse2D.Double(ms.getPosX(), ms.getPosY(), ms.getWidth(), ms.getHeight());
+      }
+
+      l.put(ms.getName(), s);
+    }
+
+    return l;
+  }
+
+  /**
+   * Turn the given ArrayList of MyShapes into a LinkedHashMap with K: String V: Color.
+   * @param myShapes ArrayList of MyShapes.
+   * @result LinkedhashMap with K: String V: Color.
+   */
+  private static LinkedHashMap<String, Color> MyShapesToColors(ArrayList<AbsMyShape> myShapes) {
+    LinkedHashMap<String, Color> l = new LinkedHashMap<String, Color>();
+
+    for (int i = 0; i < myShapes.size(); i++) {
+      AbsMyShape ms = myShapes.get(i);
+      Color c = ms.getCol().scToColor();
+      l.put(ms.getName(), c);
+    }
+
+    return l;
   }
 }

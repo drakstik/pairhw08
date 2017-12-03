@@ -18,6 +18,16 @@ public interface IHybridController {
   void pausePlay();
 
   /**
+   * Check if animation is paused.
+   */
+  boolean isPaused();
+
+  /**
+   * Remove shape from the model.
+   */
+  void removeShapeName(String shapeString);
+
+  /**
    * Restart the animation.
    */
   void restart();

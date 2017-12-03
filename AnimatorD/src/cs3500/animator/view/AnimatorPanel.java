@@ -33,7 +33,7 @@ public class AnimatorPanel extends JPanel {
     for (IMyShape shape : model.getShapes()) {
       switch (shape.getShapeType()) {
         case OVAL:
-          g2d.setColor(scToColor(shape.getCol()));
+          g2d.setColor(shape.getCol().scToColor());
           if (shape.getFill() && shape.getVisibility()) {
             g.fillOval(Math.round((float)shape.getPosX()),
                     Math.round((float)shape.getPosY()),
@@ -48,7 +48,7 @@ public class AnimatorPanel extends JPanel {
           }
           break;
         case RECTANGLE:
-          g2d.setColor(scToColor(shape.getCol()));
+          g2d.setColor(shape.getCol().scToColor());
           if (shape.getFill() && shape.getVisibility()) {
             g.fillRect(Math.round((float)shape.getPosX()),
                     Math.round((float)shape.getPosY()),
@@ -68,9 +68,5 @@ public class AnimatorPanel extends JPanel {
     }
   }
 
-  Color scToColor(ShapeColor sc) {
-    return new Color(Math.round((float) sc.getR() * 255),
-            Math.round((float) sc.getG() * 255),
-            Math.round((float) sc.getB() * 255));
-  }
+
 }
