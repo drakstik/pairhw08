@@ -56,20 +56,10 @@ public class VisualView extends JFrame implements IVisualView {
   @Override
   public void setUpPanel(LinkedHashMap<String, Shape> shapes,
                          LinkedHashMap<String, Color> shapeColors) {
-    System.out.println(this.checkTimer() +  " in setUpPanel");
     panel.setUp(shapes, shapeColors);
     panel.repaint();
     timeTick++;
     t.start();
-    System.out.println("setUpPanel() called and t.start() worked");
   }
 
-  //TODO delete this method
-  public String checkTimer() {
-    if (this.t != null) {
-      return "t is not null";
-    } else {
-      return "t is null";
-    }
-  }
 }

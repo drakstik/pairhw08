@@ -169,9 +169,7 @@ public class HybridView extends VisualView implements IHybridView {
   @Override
   public void setStartListener(IHybridController listener) {
     startButton.addActionListener((ActionEvent e) -> {
-      System.out.println(this.checkTimer() + " when start() is pressed");
       listener.start();
-      System.out.println("start() was successfully called when pressed and " + this.checkTimer());
       pauseButton.setEnabled(true);
       restartButton.setEnabled(true);
       startButton.setEnabled(false);
@@ -279,7 +277,6 @@ public class HybridView extends VisualView implements IHybridView {
   public void playTimer() {
     //this.remove(textPanel);
     this.repaint();
-    t.start();
   }
 
   @Override

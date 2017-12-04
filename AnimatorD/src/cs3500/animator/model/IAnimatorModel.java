@@ -78,4 +78,10 @@ public interface IAnimatorModel {
    * Added the given animation to the list of animation in this model.
    */
   void addAnim(AbsAnimation anim);
+
+  /**
+   * Remove the given shape from the initShapes.
+   * @param shape the shape.
+   */
+  void removeShape(AbsMyShape shape);
 }

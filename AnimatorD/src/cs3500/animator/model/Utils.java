@@ -33,7 +33,9 @@ public class Utils {
         s = new Ellipse2D.Double(ms.getPosX(), ms.getPosY(), ms.getWidth(), ms.getHeight());
       }
 
-      l.put(ms.getName(), s);
+      if (ms.getVisibility()) {
+        l.put(ms.getName(), s);
+      }
     }
 
     return l;

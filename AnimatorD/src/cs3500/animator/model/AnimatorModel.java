@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class AnimatorModel implements IAnimatorModel, IAnimatorModelView {
   ArrayList<AbsMyShape> shapes = new ArrayList<>();
+  ArrayList<AbsMyShape> removedShapes = new ArrayList<>();
   ArrayList<AbsMyShape> initShapes = new ArrayList<>();
   ArrayList<AbsAnimation> initAnims = new ArrayList<>();
   ArrayList<AbsAnimation> anims = new ArrayList<>();
@@ -331,6 +332,21 @@ public class AnimatorModel implements IAnimatorModel, IAnimatorModelView {
   public void addAnim(AbsAnimation a) {
     anims.add(validateAnim(this.anims, a));
     anims.sort(new AnimComp());
+  }
+
+  @Override
+  public void removeShape(AbsMyShape shape) {
+    boolean b = false;
+    for (AbsMyShape s : initShapes) {
+      if (s.getName().equals(shape.getName())) {
+        b = true;
+      }
+    }
+
+    if (b) {
+      initShapes.remove(shape);
+      shapes.remove(shape);
+    }
   }
 
   /**

@@ -25,8 +25,8 @@ import cs3500.animator.provider.Controller_Files.IHybridController;
 import cs3500.animator.view.HybridView;
 
 /**
- * A controller that interfaces between a model and a HybridView to allow a user
- * to interactively play an animation.
+ * A controller that interfaces between a model and a HybridView to allow a user to interactively
+ * play an animation.
  */
 public class ControllerHybrid implements IController, IHybridController {
   private IAnimatorModel model;
@@ -43,23 +43,27 @@ public class ControllerHybrid implements IController, IHybridController {
 
   /**
    * Constructor provider.
+   *
    * @param model the model this controller should be contructed with.
    */
-  public ControllerHybrid(IAnimatorModel model) {
+  public ControllerHybrid(IAnimatorModel model, cs3500.animator.provider.View_Files.HybridView pview) {
     this.model = model;
     this.view = new HybridView();
-
     int tickRateMS = ((Double) (1000 / tickRate))
             .intValue();
     timer = new Timer(tickRateMS, this);
     timer.setActionCommand("timer");
+    this.pview = pview;
 
     //model.setController(this);
     view.setController(this);
+    this.viewDisplay();
+
   }
 
   /**
    * Constructor.
+   *
    * @param model the model this controller should be contructed with.
    * @param view  the view this controller should be contructed with.
    */
@@ -71,6 +75,7 @@ public class ControllerHybrid implements IController, IHybridController {
             .intValue();
     timer = new Timer(tickRateMS, this);
     timer.setActionCommand("timer");
+    this.pview = new cs3500.animator.provider.View_Files.HybridView((int) Math.round(tickRate), "out");
 
     //model.setController(this);
     view.setController(this);
@@ -109,7 +114,7 @@ public class ControllerHybrid implements IController, IHybridController {
             view.setTickRateLabel("Current Speed = " + tickRate);
           } else {
             //TODO create window for error handling
-            JOptionPane.showMessageDialog(view,  "TickRate must be a positive integer!",
+            JOptionPane.showMessageDialog(view, "TickRate must be a positive integer!",
                     "Error!", JOptionPane.ERROR_MESSAGE);
           }
         } catch (NumberFormatException nfe) {
@@ -235,38 +240,48 @@ public class ControllerHybrid implements IController, IHybridController {
   @Override
   public void restartTimer() {
     timer.restart();
+//    this.timeCheck(0);
+    pview.display();
+    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
+            utils.MyShapesToColors(model.getShapes()));
   }
 
   @Override
   public void timeCheck(int time) {
-    if(time >= model.getEndTime() && loop) {
-      this.restart();
+    if (time >= model.getEndTime() && loop) {
+      this.restartTimer();
     }
 
     model.snapshot(time);
-//    System.out.print(isPaused() + "\n");
-    if (!isPaused()) {
-      ArrayList<AbsMyShape> shapes = model.getShapes();
-      pview.setUpPanel(utils.MyShapesToShapes(shapes), utils.MyShapesToColors(shapes));
+
+    if (!this.isPaused()) {
+      pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
+              utils.MyShapesToColors(model.getShapes()));
     }
   }
 
   @Override
   public void start() {
     this.paused = false;
-//    pview.playTimer();
-    System.out.println( "start() is called and " + pview.checkTimer());
-    timer.start();
+    this.timer.start();
+//    this.pview.playTimer();
+//    pview.display();
+    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
+            utils.MyShapesToColors(model.getShapes()));
   }
 
   @Override
   public void pausePlay() {
     if (this.isPaused()) {
       this.paused = false;
-      this.start();
+//      pview.playTimer();
+      this.timer.start();
+      pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
+              utils.MyShapesToColors(model.getShapes()));
     } else {
       this.paused = true;
-      timer.stop();
+      pview.pauseTimer();
+      this.timer.stop();
     }
   }
 
@@ -284,11 +299,18 @@ public class ControllerHybrid implements IController, IHybridController {
       }
     }
     model.getAnims().removeAll(toRemove);
+
+    for (AbsMyShape s : model.getShapes()) {
+      if (s.getName().equals(shapeString)) {
+        s.makeInvisible();
+      }
+    }
   }
 
   @Override
   public void restart() {
     this.restartTimer();
+    this.paused = false;
   }
 
   @Override
@@ -299,10 +321,19 @@ public class ControllerHybrid implements IController, IHybridController {
   @Override
   public void changeSpeed(int ticksPerSec) {
     this.setTickRate(ticksPerSec);
+    pview.changeSpeed(ticksPerSec);
   }
 
   @Override
   public void viewDisplay() {
-    this.run();
+    pview.setTimerListener(this);
+    pview.setStartListener(this);
+    pview.setRestartListener(this);
+    pview.setPausePlayListener(this);
+    pview.setLoopListener(this);
+    pview.setNewSpeedListener(this);
+    pview.setRemoveShapeListener(this);
+    pview.display();
+
   }
 }
