@@ -169,7 +169,9 @@ public class HybridView extends VisualView implements IHybridView {
   @Override
   public void setStartListener(IHybridController listener) {
     startButton.addActionListener((ActionEvent e) -> {
+      System.out.println(this.checkTimer() + " when start() is pressed");
       listener.start();
+      System.out.println("start() was successfully called when pressed and " + this.checkTimer());
       pauseButton.setEnabled(true);
       restartButton.setEnabled(true);
       startButton.setEnabled(false);
@@ -185,6 +187,8 @@ public class HybridView extends VisualView implements IHybridView {
       textPanel.remove(removeShapesPanel);
       //this.pack();
     });
+
+    System.out.println("setStartListener is finished being called");
   }
 
   @Override
@@ -245,7 +249,7 @@ public class HybridView extends VisualView implements IHybridView {
         String shapeToRemove = scan.next();
         try {
           listener.removeShapeName(shapeToRemove);
-          textOutput.append("\nShape " + shapeToRemove + " was removed from the animation.");
+          textOutput. append("\nShape " + shapeToRemove + " was removed from the animation.");
         } catch (IllegalArgumentException f) {
           textOutput.append("\nThe Shape named " + shapeToRemove + " does not exist in the " +
                   "animation, are you sure you spelled it correctly,\nor that you did not " +
@@ -336,5 +340,6 @@ public class HybridView extends VisualView implements IHybridView {
       System.out.println(finalOutput);
     }
   }
+
 
 }

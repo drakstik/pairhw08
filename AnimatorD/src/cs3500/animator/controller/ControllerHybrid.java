@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import cs3500.animator.model.AbsAnimation;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.IAnimatorModel;
+import cs3500.animator.model.Utils;
 import cs3500.animator.provider.Controller_Files.IHybridController;
 import cs3500.animator.view.HybridView;
 
@@ -33,11 +34,12 @@ public class ControllerHybrid implements IController, IHybridController {
   private cs3500.animator.provider.View_Files.HybridView pview;
 
   boolean loop = false;
-  boolean paused;
+  boolean paused = true;
 
   private Timer timer;
   private int t = 0;
   private double tickRate = 1.0;
+  private final Utils utils = new Utils();
 
   /**
    * Constructor provider.
@@ -240,10 +242,20 @@ public class ControllerHybrid implements IController, IHybridController {
     if(time >= model.getEndTime() && loop) {
       this.restart();
     }
+
+    model.snapshot(time);
+//    System.out.print(isPaused() + "\n");
+    if (!isPaused()) {
+      ArrayList<AbsMyShape> shapes = model.getShapes();
+      pview.setUpPanel(utils.MyShapesToShapes(shapes), utils.MyShapesToColors(shapes));
+    }
   }
 
   @Override
   public void start() {
+    this.paused = false;
+//    pview.playTimer();
+    System.out.println( "start() is called and " + pview.checkTimer());
     timer.start();
   }
 
