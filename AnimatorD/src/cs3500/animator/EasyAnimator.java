@@ -125,7 +125,7 @@ public final class EasyAnimator {
 //          phview.setNewSpeedListener(hc);
 //          phview.setRemoveShapeListener(hc);
           //phview.display();
-          phview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
+        //  phview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
           break;
         case ("svg"):
           cs3500.animator.provider.View_Files.SVGView pSVGview

@@ -56,6 +56,7 @@ public class ControllerHybrid implements IController, IHybridController {
 
     //model.setController(this);
     view.setController(this);
+    this.viewDisplay();
 
   }
 
@@ -254,6 +255,7 @@ public class ControllerHybrid implements IController, IHybridController {
   @Override
   public void start() {
     this.paused = false;
+    this.timer.start();
     this.pview.playTimer();
   }
 
@@ -262,9 +264,11 @@ public class ControllerHybrid implements IController, IHybridController {
     if (this.isPaused()) {
       this.paused = false;
       pview.playTimer();
+      this.timer.start();
     } else {
       this.paused = true;
       pview.pauseTimer();
+      this.timer.stop();
     }
   }
 
@@ -302,7 +306,7 @@ public class ControllerHybrid implements IController, IHybridController {
 
   @Override
   public void viewDisplay() {
-    pview.setStartListener(this);
+    pview.setTimerListener(this);
     pview.setStartListener(this);
     pview.setRestartListener(this);
     pview.setPausePlayListener(this);
