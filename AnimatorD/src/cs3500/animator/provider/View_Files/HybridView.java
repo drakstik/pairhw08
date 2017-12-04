@@ -275,7 +275,6 @@ public class HybridView extends VisualView implements IHybridView {
   public void playTimer() {
     //this.remove(textPanel);
     this.repaint();
-    t.start();
   }
 
   @Override

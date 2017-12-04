@@ -116,15 +116,15 @@ public final class EasyAnimator {
         case ("interactive"):
           cs3500.animator.provider.View_Files.HybridView phview
                   = (cs3500.animator.provider.View_Files.HybridView) view;
-          IHybridController hc = new ControllerHybrid(model);
-          phview.setLoopListener(hc);
-          phview.setNewSpeedListener(hc);
-          phview.setPausePlayListener(hc);
-          phview.setRemoveShapeListener(hc);
-          phview.setRestartListener(hc);
-          phview.setStartListener(hc);
-          phview.setTimerListener(hc);
-          phview.display();
+          IHybridController hc = new ControllerHybrid(model, phview);
+//          phview.setTimerListener(hc);
+//          phview.setStartListener(hc);
+//          phview.setRestartListener(hc);
+//          phview.setPausePlayListener(hc);
+//          phview.setLoopListener(hc);
+//          phview.setNewSpeedListener(hc);
+//          phview.setRemoveShapeListener(hc);
+          //phview.display();
           phview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
           break;
         case ("svg"):

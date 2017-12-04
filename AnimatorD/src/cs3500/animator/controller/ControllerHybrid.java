@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import cs3500.animator.model.AbsAnimation;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.IAnimatorModel;
+import cs3500.animator.model.Utils;
 import cs3500.animator.provider.Controller_Files.IHybridController;
 import cs3500.animator.view.HybridView;
 
@@ -33,27 +34,29 @@ public class ControllerHybrid implements IController, IHybridController {
   private cs3500.animator.provider.View_Files.HybridView pview;
 
   boolean loop = false;
-  boolean paused;
+  boolean paused = true;
 
   private Timer timer;
   private int t = 0;
   private double tickRate = 1.0;
+  private final Utils utils = new Utils();
 
   /**
    * Constructor provider.
    * @param model the model this controller should be contructed with.
    */
-  public ControllerHybrid(IAnimatorModel model) {
+  public ControllerHybrid(IAnimatorModel model, cs3500.animator.provider.View_Files.HybridView pview) {
     this.model = model;
     this.view = new HybridView();
-
     int tickRateMS = ((Double) (1000 / tickRate))
             .intValue();
     timer = new Timer(tickRateMS, this);
     timer.setActionCommand("timer");
+    this.pview = pview;
 
     //model.setController(this);
     view.setController(this);
+
   }
 
   /**
@@ -69,6 +72,7 @@ public class ControllerHybrid implements IController, IHybridController {
             .intValue();
     timer = new Timer(tickRateMS, this);
     timer.setActionCommand("timer");
+    this.pview = new cs3500.animator.provider.View_Files.HybridView((int) Math.round(tickRate), "out");
 
     //model.setController(this);
     view.setController(this);
@@ -233,6 +237,7 @@ public class ControllerHybrid implements IController, IHybridController {
   @Override
   public void restartTimer() {
     timer.restart();
+    this.timeCheck(0);
   }
 
   @Override
@@ -240,21 +245,26 @@ public class ControllerHybrid implements IController, IHybridController {
     if(time >= model.getEndTime() && loop) {
       this.restart();
     }
+    model.snapshot(time);
+    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
+              utils.MyShapesToColors(model.getShapes()));
+
   }
 
   @Override
   public void start() {
-    timer.start();
+    this.paused = false;
+    this.pview.playTimer();
   }
 
   @Override
   public void pausePlay() {
     if (this.isPaused()) {
       this.paused = false;
-      this.start();
+      pview.playTimer();
     } else {
       this.paused = true;
-      timer.stop();
+      pview.pauseTimer();
     }
   }
 
@@ -277,6 +287,7 @@ public class ControllerHybrid implements IController, IHybridController {
   @Override
   public void restart() {
     this.restartTimer();
+    this.paused = false;
   }
 
   @Override
@@ -291,6 +302,14 @@ public class ControllerHybrid implements IController, IHybridController {
 
   @Override
   public void viewDisplay() {
-    this.run();
+    pview.setStartListener(this);
+    pview.setStartListener(this);
+    pview.setRestartListener(this);
+    pview.setPausePlayListener(this);
+    pview.setLoopListener(this);
+    pview.setNewSpeedListener(this);
+    pview.setRemoveShapeListener(this);
+    pview.display();
+
   }
 }

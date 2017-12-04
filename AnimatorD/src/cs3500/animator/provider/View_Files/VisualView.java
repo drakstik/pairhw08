@@ -1,5 +1,7 @@
 package cs3500.animator.provider.View_Files;
 
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.BorderLayout;
@@ -59,6 +61,7 @@ public class VisualView extends JFrame implements IVisualView {
     panel.setUp(shapes, shapeColors);
     panel.repaint();
     timeTick++;
+    System.out.println(t);
     t.start();
   }
 }
