@@ -4,14 +4,14 @@ import cs3500.animator.controller.ControllerHybrid;
 import cs3500.animator.controller.ControllerSVG;
 import cs3500.animator.controller.ControllerText;
 import cs3500.animator.controller.ControllerVisual;
-import cs3500.animator.provider.controllerFiles.IHybridController;
-import cs3500.animator.provider.controllerFiles.IVisualController;
+import cs3500.animator.provider.controller.IHybridController;
+import cs3500.animator.provider.controller.IVisualController;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.AnimatorModel;
 import cs3500.animator.model.IMyShape;
 import cs3500.animator.model.ProviderViewFactory;
 import cs3500.animator.model.ViewFactory;
-import cs3500.animator.provider.viewFiles.View;
+import cs3500.animator.provider.view.View;
 import cs3500.animator.view.HybridView;
 import cs3500.animator.view.IView;
 import cs3500.animator.view.SVGView;
@@ -20,7 +20,8 @@ import cs3500.animator.view.VisualView;
 import util.AnimationFileReader;
 import util.TweenModelBuilder;
 
-import java.awt.*;
+import java.awt.Shape;
+import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -114,8 +115,8 @@ public final class EasyAnimator {
 
         switch (viewType) {
           case ("interactive"):
-            cs3500.animator.provider.viewFiles.HybridView phview
-                    = (cs3500.animator.provider.viewFiles.HybridView) view;
+            cs3500.animator.provider.view.HybridView phview
+                    = (cs3500.animator.provider.view.HybridView) view;
             IHybridController hc = new ControllerHybrid(model, phview);
             SVGView svgView = new SVGView();
             svgView.setModel(model);
@@ -124,8 +125,8 @@ public final class EasyAnimator {
             phview.displaySVG();
             break;
           case ("svg"):
-            cs3500.animator.provider.viewFiles.SVGView pSVGview
-                    = (cs3500.animator.provider.viewFiles.SVGView) view;
+            cs3500.animator.provider.view.SVGView pSVGview
+                    = (cs3500.animator.provider.view.SVGView) view;
             svgView = new SVGView();
             svgView.setModel(model);
             pSVGview.setupSVG(1200, 1200);
@@ -133,17 +134,16 @@ public final class EasyAnimator {
             pSVGview.display();
             break;
           case ("visual"):
-            cs3500.animator.provider.viewFiles.VisualView pvview
-                    = (cs3500.animator.provider.viewFiles.VisualView) view;
+            cs3500.animator.provider.view.VisualView pvview
+                    = (cs3500.animator.provider.view.VisualView) view;
             IVisualController cv = new ControllerVisual(model, pvview);
             pvview.setTimerListener(cv);
 
-//          pvview.display();
-            pvview.setUpPanel(MyShapesToShapes(shapes), MyShapesToColors(shapes));
+            pvview.setUpPanel(myShapesToShapes(shapes), myShapesToColors(shapes));
             break;
           case ("text"):
-            cs3500.animator.provider.viewFiles.TextView ptview
-                    = (cs3500.animator.provider.viewFiles.TextView) view;
+            cs3500.animator.provider.view.TextView ptview
+                    = (cs3500.animator.provider.view.TextView) view;
             ptview.describeAnimation(model.describeAnimator());
             ptview.display();
             break;
@@ -283,7 +283,7 @@ public final class EasyAnimator {
    * @param myShapes ArrayList of MyShapes.
    * @result LinkedHashMap with K: String V: Shape.
    */
-  private static LinkedHashMap<String, Shape> MyShapesToShapes(ArrayList<AbsMyShape> myShapes) {
+  private static LinkedHashMap<String, Shape> myShapesToShapes(ArrayList<AbsMyShape> myShapes) {
     LinkedHashMap<String, Shape> l = new LinkedHashMap<String, Shape>();
 
     for (int i = 0; i < myShapes.size(); i++) {
@@ -308,7 +308,7 @@ public final class EasyAnimator {
    * @param myShapes ArrayList of MyShapes.
    * @result LinkedhashMap with K: String V: Color.
    */
-  private static LinkedHashMap<String, Color> MyShapesToColors(ArrayList<AbsMyShape> myShapes) {
+  private static LinkedHashMap<String, Color> myShapesToColors(ArrayList<AbsMyShape> myShapes) {
     LinkedHashMap<String, Color> l = new LinkedHashMap<String, Color>();
 
     for (int i = 0; i < myShapes.size(); i++) {

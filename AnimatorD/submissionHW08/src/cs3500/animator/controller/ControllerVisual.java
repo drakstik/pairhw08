@@ -1,7 +1,7 @@
 package cs3500.animator.controller;
 
 import cs3500.animator.model.IAnimatorModel;
-import cs3500.animator.provider.controllerFiles.IVisualController;
+import cs3500.animator.provider.controller.IVisualController;
 import cs3500.animator.view.VisualView;
 import cs3500.animator.model.Utils;
 import javax.swing.Timer;
@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 public class ControllerVisual implements IController, IVisualController {
   IAnimatorModel model;
   VisualView view;
-  cs3500.animator.provider.viewFiles.VisualView pview; //provider views
+  cs3500.animator.provider.view.VisualView pview; //provider views
 
   int t = 0;
   double tickRate = 1.0;
@@ -44,7 +44,7 @@ public class ControllerVisual implements IController, IVisualController {
    * @param pview the animation's view.
    */
   public ControllerVisual(IAnimatorModel model,
-                          cs3500.animator.provider.viewFiles.VisualView pview) {
+                          cs3500.animator.provider.view.VisualView pview) {
     this.model = model;
     this.pview = pview;
 
@@ -115,7 +115,7 @@ public class ControllerVisual implements IController, IVisualController {
 
   @Override
   public void viewDisplay() {
-    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
-            utils.MyShapesToColors(model.getShapes()));
+    pview.setUpPanel(utils.myShapesToShapes(model.getShapes()),
+            utils.myShapesToColors(model.getShapes()));
   }
 }

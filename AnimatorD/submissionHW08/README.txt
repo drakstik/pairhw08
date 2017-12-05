@@ -29,6 +29,9 @@ DESIGN:
 PROVIDER CODE CRITIQUE:
 - Looping cannot be enabled while the animation has begun and is playing.
 - Removing shapes cannot be done while the animation has begun and is playing.
+- Use of uncoupled animations, instead of having an interface or abstract top level class.
+	All methods had to be written for each operation class in the main code.
+	
 
 OUR EXPERIENCE WITH ASSIGNMENT 8:
 - While doing this assignment we realized the importance of general design patterns like MVC and
@@ -36,4 +39,9 @@ OUR EXPERIENCE WITH ASSIGNMENT 8:
   even though our providers and us wrote our code seperately, it was still nicely adaptable and
   the same general design; We did not expect our code to be so similar. Having to go through other's
   code without having any idea of the implementation was strange at first, but once we understood
-  their code in relation to ours it became very simple.  
+  their code in relation to ours it became very simple. Assignment 8 helped us understand the design
+  concepts better, not only by analyzing the provider’s code, but by modifying our own to send to our
+  customers. It forced me to take a  whole new point of view to look at my own code with other 
+  people's eyes. 
+
+

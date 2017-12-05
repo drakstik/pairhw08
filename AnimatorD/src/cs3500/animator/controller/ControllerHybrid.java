@@ -21,7 +21,7 @@ import cs3500.animator.model.AbsAnimation;
 import cs3500.animator.model.AbsMyShape;
 import cs3500.animator.model.IAnimatorModel;
 import cs3500.animator.model.Utils;
-import cs3500.animator.provider.controllerFiles.IHybridController;
+import cs3500.animator.provider.controller.IHybridController;
 import cs3500.animator.view.HybridView;
 
 /**
@@ -31,7 +31,7 @@ import cs3500.animator.view.HybridView;
 public class ControllerHybrid implements IController, IHybridController {
   private IAnimatorModel model;
   private HybridView view;
-  private cs3500.animator.provider.viewFiles.HybridView pview;
+  private cs3500.animator.provider.view.HybridView pview;
 
   boolean loop = false;
   boolean paused = true;
@@ -46,8 +46,8 @@ public class ControllerHybrid implements IController, IHybridController {
    *
    * @param model the model this controller should be contructed with.
    */
-  public ControllerHybrid(IAnimatorModel model, cs3500.animator.provider.viewFiles.HybridView pview)
-  {
+  public ControllerHybrid(IAnimatorModel model,
+                          cs3500.animator.provider.view.HybridView pview) {
     this.model = model;
     this.view = new HybridView();
     int tickRateMS = ((Double) (1000 / tickRate))
@@ -241,8 +241,8 @@ public class ControllerHybrid implements IController, IHybridController {
   public void restartTimer() {
     timer.restart();
     pview.display();
-    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
-            utils.MyShapesToColors(model.getShapes()));
+    pview.setUpPanel(utils.myShapesToShapes(model.getShapes()),
+            utils.myShapesToColors(model.getShapes()));
   }
 
   @Override
@@ -254,8 +254,8 @@ public class ControllerHybrid implements IController, IHybridController {
     model.snapshot(time);
 
     if (!this.isPaused()) {
-      pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
-              utils.MyShapesToColors(model.getShapes()));
+      pview.setUpPanel(utils.myShapesToShapes(model.getShapes()),
+              utils.myShapesToColors(model.getShapes()));
     }
   }
 
@@ -263,8 +263,8 @@ public class ControllerHybrid implements IController, IHybridController {
   public void start() {
     this.paused = false;
     this.timer.start();
-    pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
-            utils.MyShapesToColors(model.getShapes()));
+    pview.setUpPanel(utils.myShapesToShapes(model.getShapes()),
+            utils.myShapesToColors(model.getShapes()));
   }
 
   @Override
@@ -272,8 +272,8 @@ public class ControllerHybrid implements IController, IHybridController {
     if (this.isPaused()) {
       this.paused = false;
       this.timer.start();
-      pview.setUpPanel(utils.MyShapesToShapes(model.getShapes()),
-              utils.MyShapesToColors(model.getShapes()));
+      pview.setUpPanel(utils.myShapesToShapes(model.getShapes()),
+              utils.myShapesToColors(model.getShapes()));
     } else {
       this.paused = true;
       pview.pauseTimer();

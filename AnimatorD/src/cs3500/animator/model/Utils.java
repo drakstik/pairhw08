@@ -21,7 +21,7 @@ public class Utils {
    * @param myShapes ArrayList of MyShapes.
    * @result LinkedHashMap with K: String V: Shape.
    */
-  public LinkedHashMap<String, Shape> MyShapesToShapes(ArrayList<AbsMyShape> myShapes) {
+  public LinkedHashMap<String, Shape> myShapesToShapes(ArrayList<AbsMyShape> myShapes) {
     LinkedHashMap<String, Shape> l = new LinkedHashMap<String,Shape>();
 
     for (int i = 0; i < myShapes.size(); i++) {
@@ -47,7 +47,7 @@ public class Utils {
    * @param myShapes ArrayList of MyShapes.
    * @result LinkedhashMap with K: String V: Color.
    */
-  public LinkedHashMap<String, Color> MyShapesToColors(ArrayList<AbsMyShape> myShapes) {
+  public LinkedHashMap<String, Color> myShapesToColors(ArrayList<AbsMyShape> myShapes) {
     LinkedHashMap<String, Color> l = new LinkedHashMap<String, Color>();
 
     for (int i = 0; i < myShapes.size(); i++) {

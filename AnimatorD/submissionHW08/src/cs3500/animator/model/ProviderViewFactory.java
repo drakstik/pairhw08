@@ -1,10 +1,10 @@
 package cs3500.animator.model;
 
-import cs3500.animator.provider.viewFiles.View;
-import cs3500.animator.provider.viewFiles.TextView;
-import cs3500.animator.provider.viewFiles.VisualView;
-import cs3500.animator.provider.viewFiles.SVGView;
-import cs3500.animator.provider.viewFiles.HybridView;
+import cs3500.animator.provider.view.View;
+import cs3500.animator.provider.view.TextView;
+import cs3500.animator.provider.view.VisualView;
+import cs3500.animator.provider.view.SVGView;
+import cs3500.animator.provider.view.HybridView;
 
 public class ProviderViewFactory {
 
